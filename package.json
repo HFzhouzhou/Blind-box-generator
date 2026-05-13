@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "start:lan": "HOST=0.0.0.0 node server.js",
     "check": "node --check server.js && node --check app.js && node --check mobile.js",
     "install:browsers": "playwright install chromium webkit"
   },

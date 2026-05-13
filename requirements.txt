@@ -14,3 +14,6 @@ npm run check
 
 # 4. 启动项目
 npm start
+
+# 5. 如果需要让同一 Wi-Fi 下的手机访问，用局域网模式启动
+npm run start:lan
