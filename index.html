@@ -9,123 +9,197 @@
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <div>
-          <p class="eyebrow">程序予温柔</p>
-          <h1>温柔盲盒生成器</h1>
-        </div>
+        <button class="brand-mark" id="homeBtn" type="button" aria-label="回到首页">
+          <span class="brand-dot"></span>
+          <span>
+            <strong>温柔盲盒</strong>
+            <small>程序予温柔</small>
+          </span>
+        </button>
         <div class="api-pill" id="apiStatus">检查生成服务中</div>
       </header>
 
-      <main class="workspace">
-        <section class="maker-panel" aria-label="盲盒设置">
-          <div class="field-group">
-            <label class="field-label" for="recipientName">收件人</label>
-            <input
-              id="recipientName"
-              class="text-input"
-              type="text"
-              maxlength="16"
-              placeholder="比如：朋友、老师、未来的我"
-            />
-          </div>
-
-          <div class="field-group">
-            <div class="field-label">送给谁</div>
-            <div class="choice-grid" data-choice-group="audience">
-              <button class="choice active" type="button" data-value="给自己">给自己</button>
-              <button class="choice" type="button" data-value="给朋友">给朋友</button>
-              <button class="choice" type="button" data-value="给老师">给老师</button>
-              <button class="choice" type="button" data-value="给家人">给家人</button>
-              <button class="choice" type="button" data-value="给暗恋的人">给暗恋的人</button>
-              <button class="choice" type="button" data-value="给劳动者">给劳动者</button>
+      <main class="screen-stack">
+        <section class="screen home-screen active" data-screen="home" aria-label="温柔盲盒首页">
+          <div class="hero-copy">
+            <p class="eyebrow">Blind Box Generator</p>
+            <h1>把一句心意，封进一只会发光的盲盒。</h1>
+            <p class="hero-subtitle">给自己、朋友、老师、家人，也给正在认真生活的人。</p>
+            <div class="hero-actions">
+              <button class="primary-action" id="startBtn" type="button">抽取盲盒</button>
+              <button class="ghost-action" id="surpriseBtn" type="button">直接开盒</button>
+            </div>
+            <div class="hero-tags" aria-label="作品主题">
+              <span>致敬劳动</span>
+              <span>传递温暖</span>
+              <span>表达心意</span>
             </div>
           </div>
 
-          <div class="field-group">
-            <div class="field-label">心意关键词</div>
-            <div class="chip-row" data-choice-group="emotion">
-              <button class="chip active" type="button" data-value="鼓励">鼓励</button>
-              <button class="chip" type="button" data-value="感谢">感谢</button>
-              <button class="chip" type="button" data-value="陪伴">陪伴</button>
-              <button class="chip" type="button" data-value="勇气">勇气</button>
-              <button class="chip" type="button" data-value="喜欢">喜欢</button>
-              <button class="chip" type="button" data-value="祝福">祝福</button>
-              <button class="chip" type="button" data-value="想念">想念</button>
+          <div class="hero-machine" aria-hidden="true">
+            <div class="machine-top">
+              <span>WARMTH DROP</span>
+              <span>NO. 2026</span>
             </div>
-          </div>
-
-          <div class="field-group">
-            <div class="field-label">表达语气</div>
-            <div class="segmented" data-choice-group="tone">
-              <button class="segment active" type="button" data-value="真诚">真诚</button>
-              <button class="segment" type="button" data-value="校园">校园</button>
-              <button class="segment" type="button" data-value="诗意">诗意</button>
-              <button class="segment" type="button" data-value="程序员">程序员</button>
+            <div class="machine-window">
+              <div class="scan-line"></div>
+              <div class="showcase-box box-coral">
+                <div class="box-lid"></div>
+                <div class="box-ribbon"></div>
+                <div class="box-body">
+                  <span>?</span>
+                </div>
+              </div>
+              <div class="mini-box mini-a"></div>
+              <div class="mini-box mini-b"></div>
+              <div class="mini-box mini-c"></div>
             </div>
-          </div>
-
-          <div class="field-group">
-            <label class="field-label" for="memory">想放进盲盒的小细节</label>
-            <textarea
-              id="memory"
-              class="text-area"
-              maxlength="120"
-              placeholder="比如：想谢谢 ta 一直陪我熬过低谷，也想祝 ta 每一天都被认真对待。"
-            ></textarea>
-          </div>
-
-          <div class="field-group compact">
-            <div class="field-label">文案长度</div>
-            <div class="segmented" data-choice-group="length">
-              <button class="segment" type="button" data-value="短句">短句</button>
-              <button class="segment active" type="button" data-value="小卡片">小卡片</button>
-              <button class="segment" type="button" data-value="完整信件">完整信件</button>
+            <div class="machine-base">
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
-          </div>
-
-          <div class="actions">
-            <button class="primary-action" id="generateBtn" type="button">
-              <span aria-hidden="true">✦</span>
-              开启盲盒
-            </button>
-            <button class="ghost-action" id="randomBtn" type="button">随机心意</button>
-            <button class="ghost-action" id="copyBtn" type="button">复制结果</button>
           </div>
         </section>
 
-        <section class="stage-panel" aria-label="生成结果">
-          <div class="visual-stage" aria-hidden="true">
-            <div class="spark-field" id="sparkField"></div>
-            <div class="gift-box" id="giftBox">
-              <div class="gift-lid"></div>
-              <div class="gift-bow"></div>
-              <div class="gift-body">
+        <section class="screen pick-screen" data-screen="pick" aria-label="选择盲盒">
+          <div class="scene-head">
+            <button class="back-action" data-go="home" type="button">返回</button>
+            <div>
+              <p class="eyebrow">Step 01</p>
+              <h2>选一只今天的温柔盲盒</h2>
+            </div>
+          </div>
+
+          <div class="pick-layout">
+            <div class="pack-shelf" id="packShelf" aria-label="盲盒系列">
+              <button class="pack-card active" type="button" data-pack="courage">
+                <span class="pack-number">01</span>
+                <span class="pack-visual pack-courage">
+                  <i></i>
+                </span>
+                <strong>星光鼓励款</strong>
+                <small>给低谷里的勇气</small>
+              </button>
+              <button class="pack-card" type="button" data-pack="thanks">
+                <span class="pack-number">02</span>
+                <span class="pack-visual pack-thanks">
+                  <i></i>
+                </span>
+                <strong>花束感谢款</strong>
+                <small>给认真付出的人</small>
+              </button>
+              <button class="pack-card" type="button" data-pack="company">
+                <span class="pack-number">03</span>
+                <span class="pack-visual pack-company">
+                  <i></i>
+                </span>
+                <strong>电波陪伴款</strong>
+                <small>给一起走过的日子</small>
+              </button>
+              <button class="pack-card" type="button" data-pack="heartbeat">
+                <span class="pack-number">04</span>
+                <span class="pack-visual pack-heartbeat">
+                  <i></i>
+                </span>
+                <strong>心跳心意款</strong>
+                <small>给没有说出口的话</small>
+              </button>
+            </div>
+
+            <form class="quick-panel" id="quickForm">
+              <label class="field-label" for="recipientName">写给谁</label>
+              <input
+                id="recipientName"
+                class="text-input"
+                type="text"
+                maxlength="16"
+                placeholder="名字或称呼，可不填"
+              />
+
+              <div class="field-label">对象</div>
+              <div class="audience-row" data-choice-group="audience">
+                <button class="choice active" type="button" data-value="给自己">自己</button>
+                <button class="choice" type="button" data-value="给朋友">朋友</button>
+                <button class="choice" type="button" data-value="给老师">老师</button>
+                <button class="choice" type="button" data-value="给家人">家人</button>
+                <button class="choice" type="button" data-value="给暗恋的人">心意</button>
+                <button class="choice" type="button" data-value="给劳动者">劳动者</button>
+              </div>
+
+              <label class="field-label" for="memory">一句小细节</label>
+              <textarea
+                id="memory"
+                class="text-area"
+                maxlength="80"
+                placeholder="比如：谢谢你一直陪我把日子过亮。"
+              ></textarea>
+
+              <button class="primary-action wide" id="generateBtn" type="submit">封存心意</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="screen opening-screen" data-screen="opening" aria-label="开盒中">
+          <div class="ritual-stage">
+            <div class="countdown" id="countdown">3</div>
+            <div class="beam-grid" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="ritual-box" id="giftBox" aria-hidden="true">
+              <div class="ritual-lid"></div>
+              <div class="ritual-seal"></div>
+              <div class="ritual-body">
                 <span></span>
               </div>
             </div>
+            <p class="opening-text" id="openingText">正在封存心意</p>
+          </div>
+        </section>
+
+        <section class="screen reveal-screen" data-screen="reveal" aria-label="盲盒结果">
+          <div class="scene-head">
+            <button class="back-action" data-go="pick" type="button">换一只</button>
+            <div>
+              <p class="eyebrow">Step 03</p>
+              <h2>温柔已拆封</h2>
+            </div>
           </div>
 
-          <article class="result-paper" id="resultPaper">
-            <p class="result-kicker" id="resultKicker">今日盲盒</p>
-            <h2 id="resultTitle">一份还没有拆开的温柔</h2>
-            <p class="result-message" id="resultMessage">
-              选择收件人和关键词，然后点击开启盲盒。它会生成一封可以送出去，也可以留给自己的代码情书。
-            </p>
-            <div class="code-line" id="codeLine">warmth.open({ for: "you" })</div>
-            <div class="result-meta">
-              <span id="sourceTag">本地预览</span>
-              <span id="timeTag">等待生成</span>
+          <div class="reveal-layout">
+            <div class="prize-stage" aria-hidden="true">
+              <div class="prize-ticket">
+                <span id="resultKicker">今日盲盒</span>
+                <strong>WARMTH PASS</strong>
+              </div>
+              <div class="open-box">
+                <div class="open-lid"></div>
+                <div class="open-body"></div>
+              </div>
             </div>
-          </article>
+
+            <article class="result-paper" id="resultPaper">
+              <h3 id="resultTitle">一份刚刚拆开的温柔</h3>
+              <p class="result-message" id="resultMessage"></p>
+              <div class="code-line" id="codeLine">warmth.open({ for: "you" })</div>
+              <div class="result-meta">
+                <span id="sourceTag">本地模板</span>
+                <span id="timeTag">刚刚生成</span>
+              </div>
+              <div class="result-actions">
+                <button class="primary-action" id="againBtn" type="button">再开一次</button>
+                <button class="ghost-action" id="copyBtn" type="button">复制结果</button>
+              </div>
+            </article>
+          </div>
         </section>
       </main>
-
-      <footer class="statusline">
-        <span>主题：致敬劳动、传递温暖、表达心意、展现青春</span>
-        <span>比赛作品可提交源代码、运行截图与演示视频</span>
-      </footer>
     </div>
 
+    <div class="spark-field" id="sparkField" aria-hidden="true"></div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script src="./app.js" defer></script>
   </body>
