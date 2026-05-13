@@ -1,0 +1,21 @@
+{
+  "name": "blind-box-generator",
+  "version": "1.0.0",
+  "description": "A warm blind box generator for a code confession contest.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check app.js"
+  },
+  "keywords": [
+    "blind-box",
+    "deepseek",
+    "code-confession",
+    "web"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
