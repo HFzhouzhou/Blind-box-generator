@@ -1,0 +1,16 @@
+# 温柔盲盒生成器依赖说明
+#
+# 这是一个 Node.js 项目，不使用 Python/pip 安装依赖。
+# 运行和部署请在项目根目录执行下面命令。
+
+# 1. 安装项目 npm 依赖，会读取 package.json 和 package-lock.json
+npm install
+
+# 2. 可选：安装 Playwright 浏览器，用于截图验证桌面端/手机端页面
+npm run install:browsers
+
+# 3. 检查 JS 语法
+npm run check
+
+# 4. 启动项目
+npm start

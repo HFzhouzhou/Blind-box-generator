@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check app.js"
+    "check": "node --check server.js && node --check app.js && node --check mobile.js",
+    "install:browsers": "playwright install chromium webkit"
   },
   "keywords": [
     "blind-box",
@@ -17,5 +18,8 @@
   "license": "MIT",
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
   }
 }

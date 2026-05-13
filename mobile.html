@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>温柔盲盒生成器 · 手机版</title>
+    <link rel="stylesheet" href="./mobile.css" />
+  </head>
+  <body>
+    <main class="mobile-app">
+      <section class="mobile-view intro-view active" data-view="intro" aria-label="手机端首页">
+        <header class="mobile-topbar">
+          <div>
+            <p>程序予温柔</p>
+            <strong>温柔盲盒</strong>
+          </div>
+          <span class="status-pill" id="apiStatus">检查中</span>
+        </header>
+
+        <div class="hero-card">
+          <div class="hero-label">
+            <span>今日限定</span>
+            <span>No. 2026</span>
+          </div>
+          <div class="floating-pack" aria-hidden="true">
+            <div class="pack-lid"></div>
+            <div class="pack-bow"></div>
+            <div class="pack-body">
+              <span>?</span>
+            </div>
+          </div>
+          <h1>轻触，拆开一份温柔。</h1>
+          <p>像抽盲盒一样，把一句心意交给今天。</p>
+        </div>
+
+        <div class="dock-actions">
+          <button class="primary-btn" id="startBtn" type="button">开始抽取</button>
+          <button class="plain-btn" id="quickOpenBtn" type="button">随机开一只</button>
+        </div>
+      </section>
+
+      <section class="mobile-view setup-view" data-view="setup" aria-label="盲盒设置">
+        <header class="page-head">
+          <button class="icon-btn" data-go="intro" type="button" aria-label="返回首页">‹</button>
+          <div>
+            <p>Step 01</p>
+            <h2>选择心意</h2>
+          </div>
+        </header>
+
+        <div class="pack-carousel" id="packCarousel" aria-label="盲盒类型">
+          <button class="mini-pack active" type="button" data-pack="courage">
+            <span class="mini-box mint"></span>
+            <strong>鼓励</strong>
+            <small>给勇气</small>
+          </button>
+          <button class="mini-pack" type="button" data-pack="thanks">
+            <span class="mini-box coral"></span>
+            <strong>感谢</strong>
+            <small>给认真</small>
+          </button>
+          <button class="mini-pack" type="button" data-pack="company">
+            <span class="mini-box violet"></span>
+            <strong>陪伴</strong>
+            <small>给同行</small>
+          </button>
+          <button class="mini-pack" type="button" data-pack="heartbeat">
+            <span class="mini-box rose"></span>
+            <strong>心意</strong>
+            <small>给心动</small>
+          </button>
+        </div>
+
+        <form class="glass-form" id="mobileForm">
+          <label for="recipientName">写给谁</label>
+          <input id="recipientName" type="text" maxlength="16" placeholder="称呼，可不填" />
+
+          <label>对象</label>
+          <div class="segmented" data-choice-group="audience">
+            <button class="active" type="button" data-value="给自己">自己</button>
+            <button type="button" data-value="给朋友">朋友</button>
+            <button type="button" data-value="给老师">老师</button>
+            <button type="button" data-value="给家人">家人</button>
+            <button type="button" data-value="给暗恋的人">心意</button>
+            <button type="button" data-value="给劳动者">劳动者</button>
+          </div>
+
+          <label for="memory">一句小细节</label>
+          <textarea id="memory" maxlength="70" placeholder="例如：谢谢你一直把日子过亮。"></textarea>
+
+          <button class="primary-btn full" id="generateBtn" type="submit">封存并开盒</button>
+        </form>
+      </section>
+
+      <section class="mobile-view ritual-view" data-view="ritual" aria-label="开盒仪式">
+        <div class="ritual-shell">
+          <div class="ritual-count" id="ritualCount">3</div>
+          <div class="ritual-copy">
+            <p id="ritualText">正在封存心意</p>
+            <span>Hold on, warmth is loading.</span>
+          </div>
+          <div class="ritual-pack" id="ritualPack" aria-hidden="true">
+            <div class="ritual-lid"></div>
+            <div class="ritual-bow"></div>
+            <div class="ritual-body"></div>
+          </div>
+          <div class="light-bars" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="mobile-view result-view" data-view="result" aria-label="生成结果">
+        <header class="page-head">
+          <button class="icon-btn" data-go="setup" type="button" aria-label="重新选择">‹</button>
+          <div>
+            <p>Step 03</p>
+            <h2>温柔已拆封</h2>
+          </div>
+        </header>
+
+        <article class="result-card">
+          <div class="ticket-strip">
+            <span id="resultKicker">今日盲盒</span>
+            <strong>WARMTH PASS</strong>
+          </div>
+          <h3 id="resultTitle">一份刚刚拆开的温柔</h3>
+          <p id="resultMessage"></p>
+          <code id="codeLine">warmth.open({ for: "you" })</code>
+          <div class="meta-row">
+            <span id="sourceTag">本地模板</span>
+            <span id="timeTag">刚刚生成</span>
+          </div>
+        </article>
+
+        <div class="dock-actions">
+          <button class="primary-btn" id="againBtn" type="button">再开一次</button>
+          <button class="plain-btn" id="copyBtn" type="button">复制结果</button>
+        </div>
+      </section>
+    </main>
+
+    <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+    <div class="mobile-toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./mobile.js" defer></script>
+  </body>
+</html>

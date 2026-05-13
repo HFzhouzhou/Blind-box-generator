@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>温柔盲盒生成器</title>
+    <script>
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        const prefersDesktop = params.get("view") === "desktop";
+        const mobileViewport = window.matchMedia("(max-width: 760px), (pointer: coarse)").matches;
+        const mobileAgent = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+        if (!prefersDesktop && (mobileViewport || mobileAgent)) {
+          window.location.replace("./mobile.html");
+        }
+      })();
+    </script>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>

@@ -19,9 +19,12 @@
 
 ```text
 浏览器页面
-  ├─ index.html：页面结构
-  ├─ styles.css：视觉样式、响应式布局、盲盒动画
-  └─ app.js：前端状态、按钮交互、生成结果渲染
+  ├─ index.html：桌面端入口，并负责判断手机设备后跳转到 mobile.html
+  ├─ styles.css：桌面端视觉样式和盲盒动画
+  ├─ app.js：桌面端状态、按钮交互、生成结果渲染
+  ├─ mobile.html：独立手机端页面
+  ├─ mobile.css：手机端苹果风简约视觉和开盒仪式动画
+  └─ mobile.js：手机端状态、开盒流程、生成结果渲染
 
 Node.js 服务
   └─ server.js
@@ -36,15 +39,23 @@ Node.js 服务
 
 - Node.js 18 或更高版本
 - 可选：DeepSeek API Key
+- 可选：Playwright 浏览器，用于截图验证桌面端和手机端页面
 
-本项目没有第三方 npm 依赖，克隆后可以直接运行。
+依赖安装命令已写在 `requirements.txt` 中。由于这是 Node.js 项目，实际依赖由 `package.json` 和 `package-lock.json` 管理，不使用 Python 的 `pip install -r requirements.txt`。
+
+手机访问网站根路径 `/` 时，会自动跳转到独立的手机版页面 `mobile.html`。如果想在手机上强制看桌面版，可以访问：
+
+```text
+http://127.0.0.1:8787/?view=desktop
+```
 
 ## 本地运行
 
 ```bash
 git clone git@github.com:HFzhouzhou/Blind-box-generator.git
 cd Blind-box-generator
-node server.js
+npm install
+npm start
 ```
 
 浏览器打开：
@@ -57,6 +68,18 @@ http://127.0.0.1:8787
 
 ```bash
 npm start
+```
+
+如果要安装用于截图验证的 Playwright 浏览器：
+
+```bash
+npm run install:browsers
+```
+
+安装后可以用 Playwright 检查手机端页面，例如：
+
+```bash
+npx playwright screenshot -b chromium --viewport-size=390,844 --wait-for-timeout=800 http://127.0.0.1:8787/mobile.html mobile-preview.png
 ```
 
 ## 配置 DeepSeek API
@@ -157,7 +180,8 @@ http://127.0.0.1:8787/api/health
 适合比赛现场或课堂展示：
 
 ```bash
-node server.js
+npm install
+npm start
 ```
 
 打开：
@@ -185,13 +209,14 @@ http://192.168.x.x:8787
 ```bash
 git clone git@github.com:HFzhouzhou/Blind-box-generator.git
 cd Blind-box-generator
+npm install
 cp .env.example .env
 ```
 
 填好 `.env` 后运行：
 
 ```bash
-node server.js
+npm start
 ```
 
 长期运行可以使用 `pm2`：
@@ -200,6 +225,8 @@ node server.js
 pm2 start server.js --name blind-box-generator
 pm2 save
 ```
+
+部署服务器上如果只运行网站，不做截图验证，可以不执行 `npm run install:browsers`。
 
 ### 方式三：反向代理
 
@@ -226,6 +253,12 @@ server {
 ├── index.html      # 单页网页入口
 ├── styles.css      # 页面样式和动画
 ├── app.js          # 前端交互逻辑
+├── mobile.html     # 独立手机端页面
+├── mobile.css      # 手机端样式和仪式感动画
+├── mobile.js       # 手机端交互逻辑
+├── package.json    # npm 依赖和运行脚本
+├── package-lock.json # 锁定依赖版本
+├── requirements.txt # 依赖安装命令说明
 ├── server.js       # Node.js 静态服务与 DeepSeek 代理
 ├── .env.example    # 环境变量示例
 ├── TODO.md         # 开发计划与作品框架
