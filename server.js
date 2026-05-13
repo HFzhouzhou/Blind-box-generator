@@ -80,26 +80,40 @@ async function generateBlessing(input) {
 
 async function requestDeepSeek(payload) {
   const systemPrompt = [
-    "你是一个中文代码表白大赛作品里的温柔文案生成器。",
-    "请根据用户提供的盲盒参数，生成积极、健康、原创、适合校园展示的祝福或表白文案。",
-    "不要输出过度暧昧、低俗、消极或让人不适的内容。",
-    "必须输出 json，字段为 kicker、title、message、codeLine、palette。",
-    "palette 是 4 个适合网页动画的十六进制颜色。",
+    "你是「温柔盲盒生成器」的中文文案引擎，作品用于校园代码表白大赛。",
+    "你的任务是把用户选择的盲盒对象、心意关键词、语气和小细节，生成一份适合开盲盒揭晓页展示的温柔文案。",
+    "输出必须是合法 JSON 字符串，不要 Markdown，不要代码块，不要解释，不要在 JSON 外输出任何文字。",
+    "JSON 字段必须且只能包含：kicker、title、message、codeLine、palette。",
+    "kicker：8-18 个中文字符，像盲盒票根标签，例如「给朋友的陪伴盲盒」。",
+    "title：8-18 个中文字符，有记忆点，不要空泛。",
+    "message：按 length 控制长度；短句 1 句，小卡片 3 句左右，完整信件 4-6 句。句子要自然、真诚、适合公开展示。",
+    "codeLine：一行代码式情话，必须短、可读、有程序感，优先使用 JS 风格。",
+    "palette：4 个十六进制颜色，适合盲盒动画，必须是 #RRGGBB。",
+    "内容要求积极健康、原创、温暖；不要低俗、PUA、过度暧昧、煽情过头、消极丧气或泄露隐私。",
+    "如果对象是老师或劳动者，要突出感谢与尊重；如果对象是暗恋的人，要克制、真诚、不制造压力。",
+    "不要提到 AI、模型、提示词、JSON、接口、用户输入这些幕后信息。",
   ].join("\n");
 
   const userPrompt = {
-    json: true,
+    task: "请根据下面参数生成 json 结果。",
     recipientName: payload.recipientName || "未填写",
     audience: payload.audience,
     emotion: payload.emotion,
     tone: payload.tone,
     length: payload.length,
     memory: payload.memory || "没有额外细节",
-    exampleOutput: {
+    styleGuide: {
+      真诚: "像手写卡片，直白但不尴尬",
+      校园: "带一点青春、课堂、操场、晚风的感觉",
+      诗意: "画面感强，但不要堆砌辞藻",
+      程序员: "可以有变量、函数、编译、debug 等轻量程序梗",
+    },
+    jsonExample: {
       kicker: "给朋友的温柔盲盒",
       title: "愿你一路有光",
-      message: "两到六句话，按 length 控制长短。",
-      codeLine: 'const warmth = await heart.send("给你");',
+      message:
+        "谢谢你把普通的日子也过得很亮。愿你疲惫时有人替你留灯，也愿你开心时有人认真听你分享。我们继续一起往前走，把每一天都编译成值得记住的版本。",
+      codeLine: 'await heart.send({ to: "朋友", gift: "陪伴" });',
       palette: ["#ff7d67", "#f4c95d", "#47b88c", "#6ba9d6"],
     },
   };
@@ -114,12 +128,12 @@ async function requestDeepSeek(payload) {
       model: deepseekModel,
       messages: [
         { role: "system", content: systemPrompt },
-        { role: "user", content: JSON.stringify(userPrompt) },
+        { role: "user", content: JSON.stringify(userPrompt, null, 2) },
       ],
       thinking: { type: "disabled" },
       response_format: { type: "json_object" },
-      max_tokens: 900,
-      temperature: 0.86,
+      max_tokens: 1100,
+      temperature: 0.78,
       stream: false,
     }),
   });
@@ -135,18 +149,27 @@ async function requestDeepSeek(payload) {
     throw new Error("DeepSeek returned empty content");
   }
 
-  return sanitizeAiResult(JSON.parse(content));
+  return sanitizeAiResult(parseDeepSeekJson(content));
 }
 
 function sanitizeAiResult(result) {
   return {
-    kicker: trimText(result.kicker, 24) || "今日盲盒",
-    title: trimText(result.title, 32) || "愿你被温柔照亮",
-    message: trimText(result.message, 420) || "愿你今天也有一点被认真照顾的好运。",
+    kicker: trimText(result.kicker, 30) || "今日盲盒",
+    title: trimText(result.title, 36) || "愿你被温柔照亮",
+    message: trimText(result.message, 560) || "愿你今天也有一点被认真照顾的好运。",
     codeLine:
-      trimText(result.codeLine, 120) || 'heart.send({ type: "warmth", to: "you" });',
+      trimText(result.codeLine, 140) || 'heart.send({ type: "warmth", to: "you" });',
     palette: sanitizePalette(result.palette),
   };
+}
+
+function parseDeepSeekJson(content) {
+  const cleanContent = String(content || "")
+    .trim()
+    .replace(/^```(?:json)?/i, "")
+    .replace(/```$/i, "")
+    .trim();
+  return JSON.parse(cleanContent);
 }
 
 function localBlessing(payload) {

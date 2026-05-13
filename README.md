@@ -59,25 +59,55 @@ http://127.0.0.1:8787
 npm start
 ```
 
-## 配置 DeepSeek
+## 配置 DeepSeek API
 
-复制环境变量模板：
+DeepSeek 生成文案的 prompt 已经在 `server.js` 里调好，位置是 `requestDeepSeek()` 函数中的 `systemPrompt` 和 `userPrompt`。正常使用时不需要改 `server.js`，只需要配置 `.env` 里的 API Key。
+
+### 第一步：复制配置文件
+
+在项目根目录执行：
 
 ```bash
 cp .env.example .env
 ```
 
-编辑 `.env`：
+执行后会多出一个 `.env` 文件。真正填写 API Key 的地方就在这个 `.env` 文件里。
+
+### 第二步：填写 API Key
+
+打开 `.env` 文件，找到这一行：
 
 ```text
-DEEPSEEK_API_KEY=你的 DeepSeek API Key
+DEEPSEEK_API_KEY=sk-your-key-here
+```
+
+把等号 `=` 后面的 `sk-your-key-here` 替换成你的 DeepSeek API Key，例如：
+
+```text
+DEEPSEEK_API_KEY=sk-xxxxxxxxxxxxxxxx
+```
+
+注意：只改这一行等号后面的内容，不要加空格，不要加引号，不要把 `.env` 上传到 GitHub。
+
+`.env` 完整示例：
+
+```text
+DEEPSEEK_API_KEY=sk-xxxxxxxxxxxxxxxx
 DEEPSEEK_BASE_URL=https://api.deepseek.com
 DEEPSEEK_MODEL=deepseek-v4-flash
 PORT=8787
 HOST=127.0.0.1
 ```
 
-重新启动服务：
+字段说明：
+
+- `DEEPSEEK_API_KEY`：你的 DeepSeek API Key，必须填写。
+- `DEEPSEEK_BASE_URL`：DeepSeek 官方 OpenAI 兼容接口地址，保持 `https://api.deepseek.com` 即可。
+- `DEEPSEEK_MODEL`：默认使用 `deepseek-v4-flash`，想用更强模型可以改成 `deepseek-v4-pro`。
+- `PORT`：本地服务端口，默认 `8787`。
+- `HOST`：本机演示保持 `127.0.0.1`；如果要让同一局域网其他设备访问，可改成 `0.0.0.0`。
+
+### 第三步：重启服务
 
 ```bash
 node server.js
@@ -92,6 +122,33 @@ DeepSeek API 参考：
 
 - https://api-docs.deepseek.com/zh-cn/
 - https://api-docs.deepseek.com/zh-cn/guides/json_mode/
+
+### 如何确认 API 是否配置成功
+
+启动服务后打开页面：
+
+```text
+http://127.0.0.1:8787
+```
+
+看页面右上角状态：
+
+- 显示 `DeepSeek 已接入`：配置成功，正在使用 DeepSeek 生成。
+- 显示 `本地模板模式`：没有读到 API Key，请检查 `.env` 文件是否存在，以及 `DEEPSEEK_API_KEY=` 后面是否已经替换为真实 key。
+
+也可以访问健康检查接口：
+
+```text
+http://127.0.0.1:8787/api/health
+```
+
+如果返回内容里包含：
+
+```json
+{"deepseekConfigured":true}
+```
+
+就说明 API Key 已被服务读取。
 
 ## 部署方式
 
